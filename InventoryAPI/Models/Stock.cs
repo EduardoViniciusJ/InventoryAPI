@@ -2,7 +2,7 @@
 
 namespace TestesAPI.Models
 {
-    public class Inventory
+    public class Stock
     {
         public int Id { get; set; }
 
