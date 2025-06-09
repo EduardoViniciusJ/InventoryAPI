@@ -8,10 +8,10 @@ namespace Inventory.Context
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-        DbSet<Product> Products { get; set; }
-        DbSet<OrderItem> OrderItems { get; set; }
-        DbSet<Order> Orders { get; set; }
-        DbSet<Stock> Stock { get; set; }
-        DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Stock> Stock { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

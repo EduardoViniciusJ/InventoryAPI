@@ -8,7 +8,7 @@ namespace Inventory.Repositories.Interface
         Task<Category?> GetByIdAsync(int id);
         Task<Category?> GetByNameAsync(string name);
         Task<Category> CreateAsync(Category category);
-        Task<Category> UpdateAsync(Category category);
+        Category Update(Category category);
         Task<bool> DeleteAsync(int id);
     }
 }

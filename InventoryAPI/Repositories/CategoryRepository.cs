@@ -1,5 +1,6 @@
 ﻿using Inventory.Context;
 using Inventory.Repositories.Interface;
+using Microsoft.EntityFrameworkCore;
 using TestesAPI.Models;
 
 namespace Inventory.Repositories
@@ -11,36 +12,55 @@ namespace Inventory.Repositories
         public CategoryRepository(AppDbContext context)
         {
             _context = context;
-        }   
-
-        public Task<Category> CreateAsync(Category category)
-        {
-            throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync(int id)
+        // Adiciona uma nova categoria
+        public async Task<Category> CreateAsync(Category category)
         {
-            throw new NotImplementedException();
+            await _context.Categories.AddAsync(category);
+            return category;
         }
 
-        public Task<IEnumerable<Category>> GetAllAsync()
+        // Retorna todas as categorias
+        public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Categories
+                                 .AsNoTracking()
+                                 .ToListAsync();
         }
 
-        public Task<Category?> GetByIdAsync(int id)
+        // Busca uma categoria pelo ID
+        public async Task<Category?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Categories
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<Category?> GetByNameAsync(string name)
+        // Busca uma categoria pelo nome 
+        public async Task<Category?> GetByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            return await _context.Categories
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(x => x.Name == name);
         }
 
-        public Task<Category> UpdateAsync(Category category)
+        // Marca a categoria como atualizada no contexto
+        public Category Update(Category category)
         {
-            throw new NotImplementedException();
+            _context.Categories.Update(category);
+            return category;
         }
+
+        // Remove uma categoria pelo ID se existir
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null) return false;
+
+            _context.Categories.Remove(category);
+            return true;
+        }
+
     }
 }
