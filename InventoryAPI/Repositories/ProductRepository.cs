@@ -1,5 +1,6 @@
 ﻿using Inventory.Context;
 using Inventory.Repositories.Interface;
+using Microsoft.EntityFrameworkCore;
 using TestesAPI.Models;
 
 namespace Inventory.Repositories
@@ -13,35 +14,52 @@ namespace Inventory.Repositories
             _context = context;
         }
 
-        public Task<Product> CreateAsync(Product product)
+        // Adiciona um novo produto
+        public async Task<Product> CreateAsync(Product product)
         {
-            throw new NotImplementedException();
+            await _context.Products.AddAsync(product);
+            return product;
         }
 
-        public Task<bool> DeleteAsync(int id)
+        // Retorna todos os produtos
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Products
+                                 .AsNoTracking()
+                                 .ToListAsync();
         }
 
-        public Task<IEnumerable<Product>> GetAllAsync()
+        // Busca um produto pelo ID 
+        public async Task<Product?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Products
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<Product?> GetByIdAsync(int id)
+        // Busca um produto pelo nome 
+        public async Task<Product?> GetByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            return await _context.Products
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(x => x.Name == name);
         }
 
-        public Task<Product?> GetByNameAsync(string name)
+        // Atualiza o produto 
+        public Product Update(Product product)
         {
-            throw new NotImplementedException();
+            _context.Products.Update(product);
+            return product;
         }
 
-        public Task<Product> UpdateAsync(Product product)
+        // Remove um produto pelo ID se existir
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
-        }
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) return false;
 
+            _context.Products.Remove(product);
+            return true;
+        }
     }
 }
